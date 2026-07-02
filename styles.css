@@ -143,6 +143,11 @@ h2 {
   transform-origin: center;
 }
 
+.camera-feed,
+.snapshot {
+  transition: transform 0.15s ease;
+}
+
 .snapshot {
   display: none;
 }
@@ -176,6 +181,10 @@ h2 {
   backdrop-filter: blur(14px);
   font-size: 0.88rem;
   font-weight: 600;
+}
+
+.status-pill[data-state="live"] {
+  background: rgba(255, 255, 255, 0.18);
 }
 
 .controls {

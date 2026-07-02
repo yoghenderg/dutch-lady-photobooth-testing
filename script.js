@@ -11,11 +11,12 @@ const statusPill = document.getElementById("statusPill");
 const previewContext = snapshot.getContext("2d");
 let cameraStream = null;
 let latestFrame = "";
-let rotationIndex = 1;
+let rotationIndex = 2;
 const rotationOptions = [0, 90, 180, 270];
 
 function setStatus(message) {
   statusPill.textContent = message;
+  statusPill.dataset.state = message.includes("Live") ? "live" : "idle";
 }
 
 async function startCamera() {
@@ -46,8 +47,7 @@ async function startCamera() {
 function applyRotation() {
   const degrees = rotationOptions[rotationIndex];
   camera.style.setProperty("--rotate", `${degrees}deg`);
-  const label = degrees === 0 ? "Rotate 90°" : `Rotate ${rotationOptions[(rotationIndex + 1) % rotationOptions.length]}°`;
-  rotateButton.textContent = label;
+  rotateButton.textContent = `Rotate ${rotationOptions[(rotationIndex + 1) % rotationOptions.length]}°`;
 }
 
 function rotateCamera() {
@@ -80,12 +80,23 @@ function capturePhoto() {
 
   const offsetX = (camera.videoWidth - size) / 2;
   const offsetY = (camera.videoHeight - size) / 2;
+  const degrees = rotationOptions[rotationIndex];
 
   previewContext.save();
   previewContext.translate(size / 2, size / 2);
-  previewContext.rotate((rotationOptions[rotationIndex] * Math.PI) / 180);
+  previewContext.rotate((degrees * Math.PI) / 180);
   previewContext.scale(-1, 1);
-  previewContext.drawImage(camera, -size / 2, -size / 2, size, size);
+  previewContext.drawImage(
+    camera,
+    offsetX,
+    offsetY,
+    size,
+    size,
+    -size / 2,
+    -size / 2,
+    size,
+    size
+  );
   previewContext.restore();
 
   latestFrame = snapshot.toDataURL("image/png");
