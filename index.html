@@ -1,0 +1,79 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Photobooth Tester</title>
+    <meta
+      name="description"
+      content="Portrait photobooth tester with webcam capture, preview, and retake flow."
+    />
+    <meta name="theme-color" content="#2d7dd2" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <main class="app-shell">
+      <section class="stage" aria-label="photobooth tester">
+        <div class="stage-header">
+          <p class="eyebrow">Webcam test rig</p>
+          <h1>Portrait capture in a 1:1 viewfinder.</h1>
+          <p class="lead">
+            Open this page on your NUC, allow camera access, capture a sample, and
+            retake if needed.
+          </p>
+        </div>
+
+        <div class="camera-card">
+          <div class="camera-frame">
+            <video
+              id="camera"
+              class="camera-feed"
+              autoplay
+              playsinline
+              muted
+            ></video>
+            <canvas id="snapshot" class="snapshot" aria-hidden="true"></canvas>
+            <div class="viewfinder" aria-hidden="true">
+              <div class="viewfinder-guide"></div>
+            </div>
+            <div class="status-pill" id="statusPill">Camera idle</div>
+          </div>
+
+          <div class="controls">
+            <button class="button glass" id="startButton" type="button">
+              Start camera
+            </button>
+            <button class="button capture" id="captureButton" type="button" disabled>
+              Capture photo
+            </button>
+            <button class="button glass" id="retakeButton" type="button" hidden>
+              Retake
+            </button>
+          </div>
+        </div>
+      </section>
+
+      <section class="review-panel" id="reviewPanel" aria-live="polite" hidden>
+        <div class="review-copy">
+          <p class="eyebrow">Sample preview</p>
+          <h2>Your capture is ready.</h2>
+          <p>
+            This is the photo that your tester can review before going back to the
+            live camera.
+          </p>
+        </div>
+        <div class="preview-card">
+          <img id="previewImage" alt="Captured preview" />
+        </div>
+      </section>
+    </main>
+
+    <script src="script.js"></script>
+  </body>
+</html>
