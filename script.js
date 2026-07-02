@@ -3,6 +3,7 @@ const snapshot = document.getElementById("snapshot");
 const previewImage = document.getElementById("previewImage");
 const reviewPanel = document.getElementById("reviewPanel");
 const startButton = document.getElementById("startButton");
+const rotateButton = document.getElementById("rotateButton");
 const captureButton = document.getElementById("captureButton");
 const retakeButton = document.getElementById("retakeButton");
 const statusPill = document.getElementById("statusPill");
@@ -10,6 +11,8 @@ const statusPill = document.getElementById("statusPill");
 const previewContext = snapshot.getContext("2d");
 let cameraStream = null;
 let latestFrame = "";
+let rotationIndex = 1;
+const rotationOptions = [0, 90, 180, 270];
 
 function setStatus(message) {
   statusPill.textContent = message;
@@ -27,6 +30,8 @@ async function startCamera() {
     });
 
     camera.srcObject = cameraStream;
+    applyRotation();
+    rotateButton.disabled = false;
     captureButton.disabled = false;
     startButton.textContent = "Camera ready";
     startButton.disabled = true;
@@ -36,6 +41,19 @@ async function startCamera() {
     setStatus("Camera blocked");
     startButton.textContent = "Camera unavailable";
   }
+}
+
+function applyRotation() {
+  const degrees = rotationOptions[rotationIndex];
+  camera.style.setProperty("--rotate", `${degrees}deg`);
+  const label = degrees === 0 ? "Rotate 90°" : `Rotate ${rotationOptions[(rotationIndex + 1) % rotationOptions.length]}°`;
+  rotateButton.textContent = label;
+}
+
+function rotateCamera() {
+  rotationIndex = (rotationIndex + 1) % rotationOptions.length;
+  applyRotation();
+  setStatus(`Rotation ${rotationOptions[rotationIndex]}°`);
 }
 
 function showReview() {
@@ -65,19 +83,9 @@ function capturePhoto() {
 
   previewContext.save();
   previewContext.translate(size / 2, size / 2);
-  previewContext.rotate((90 * Math.PI) / 180);
+  previewContext.rotate((rotationOptions[rotationIndex] * Math.PI) / 180);
   previewContext.scale(-1, 1);
-  previewContext.drawImage(
-    camera,
-    offsetX,
-    offsetY,
-    size,
-    size,
-    -size / 2,
-    -size / 2,
-    size,
-    size
-  );
+  previewContext.drawImage(camera, -size / 2, -size / 2, size, size);
   previewContext.restore();
 
   latestFrame = snapshot.toDataURL("image/png");
@@ -100,6 +108,7 @@ function retakePhoto() {
 }
 
 startButton.addEventListener("click", startCamera);
+rotateButton.addEventListener("click", rotateCamera);
 captureButton.addEventListener("click", capturePhoto);
 retakeButton.addEventListener("click", retakePhoto);
 
