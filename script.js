@@ -64,7 +64,8 @@ function capturePhoto() {
   const offsetY = (camera.videoHeight - size) / 2;
 
   previewContext.save();
-  previewContext.translate(size, 0);
+  previewContext.translate(size / 2, size / 2);
+  previewContext.rotate((90 * Math.PI) / 180);
   previewContext.scale(-1, 1);
   previewContext.drawImage(
     camera,
@@ -72,8 +73,8 @@ function capturePhoto() {
     offsetY,
     size,
     size,
-    0,
-    0,
+    -size / 2,
+    -size / 2,
     size,
     size
   );

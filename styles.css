@@ -137,6 +137,11 @@ h2 {
   object-fit: cover;
 }
 
+.camera-feed {
+  transform: scaleX(-1) rotate(90deg);
+  transform-origin: center;
+}
+
 .snapshot {
   display: none;
 }
