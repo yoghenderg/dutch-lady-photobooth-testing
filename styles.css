@@ -129,23 +129,21 @@ h2 {
 }
 
 .camera-feed,
+.camera-source,
 .snapshot {
   position: absolute;
   inset: 0;
   width: 100%;
   height: 100%;
-  object-fit: cover;
 }
 
 .camera-feed {
-  --rotate: 90deg;
-  transform: scaleX(-1) rotate(var(--rotate));
-  transform-origin: center;
+  display: block;
+  object-fit: cover;
 }
 
-.camera-feed,
-.snapshot {
-  transition: transform 0.15s ease;
+.camera-source {
+  display: none;
 }
 
 .snapshot {
